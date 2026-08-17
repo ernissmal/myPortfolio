@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { worlds } from "./world-data";
 
 export const metadata: Metadata = {
   title: "Ernests Smaliķis — I participate.",
@@ -10,16 +11,6 @@ const labels = [
   "Engineer", "Founder", "Soldier", "Volunteer", "Latvian", "Warehouse worker",
   "Writer", "Systems", "Logistics", "Community", "Ambition", "Failure",
   "Discipline", "Curiosity",
-];
-
-const worlds = [
-  ["01", "BUILD", "Software. Products. Systems. Experiments."],
-  ["02", "LUCENEX", "Operational systems for the physical world."],
-  ["03", "SERVE", "Responsibility, discipline, and showing up."],
-  ["04", "CONTRIBUTE", "Communities do not run on vibes alone."],
-  ["05", "CREATE", "Things that are still becoming real."],
-  ["06", "THINK", "Notes from trying to become less stupid."],
-  ["07", "NOW", "What has my attention right now."],
 ];
 
 export default function Home() {
@@ -59,9 +50,33 @@ export default function Home() {
       <section className="world-index" aria-labelledby="worlds-title">
         <div className="world-index-heading"><div><p className="eyebrow">Explore the parts</p><h2 id="worlds-title">THE WORLDS</h2></div><p className="body-copy">Not a navigation bar. A map of what I keep getting involved in.</p></div>
         <div className="world-list">
-          {worlds.map(([number, name, description]) => <a href={`#${name.toLowerCase()}`} className="world" key={name}><span className="world-number">{number}</span><span className="world-name">{name}</span><span className="world-description">{description}</span><span className="world-arrow" aria-hidden="true">↗</span></a>)}
+          {worlds.map((world) => <a href={`#${world.slug}`} className="world" key={world.slug}><span className="world-number">{world.number}</span><span className="world-name">{world.name}</span><span className="world-description">{world.deck}</span><span className="world-arrow" aria-hidden="true">↓</span></a>)}
         </div>
       </section>
+
+      <section className="chapter-intro" aria-label="World chapters introduction">
+        <p className="eyebrow">Keep going</p>
+        <p>There is no menu hiding the person. There is only the trail.</p>
+      </section>
+
+      <div className="world-chapters">
+        {worlds.map((world) => (
+          <section className="world-chapter" id={world.slug} key={world.slug} aria-labelledby={`${world.slug}-title`}>
+            <div className="chapter-rules" aria-hidden="true"><span>{world.number} / 07</span><span>{world.eyebrow}</span></div>
+            <div className="chapter-main">
+              <p className="eyebrow">{world.eyebrow}</p>
+              <h2 id={`${world.slug}-title`}>{world.name}</h2>
+              <p className="chapter-deck">{world.deck}</p>
+            </div>
+            <div className="chapter-reading">
+              <blockquote>{world.thesis}</blockquote>
+              {world.passages.map((passage) => <p key={passage}>{passage}</p>)}
+              {world.boundary && <aside>{world.boundary}</aside>}
+            </div>
+            <div className="chapter-signal"><span>Live signal</span><p>{world.signal}</p></div>
+          </section>
+        ))}
+      </div>
 
       <section className="closing" aria-label="Closing statement"><p className="eyebrow">Status: unfinished</p><p>THE INTERESTING SHIT<br />HOPEFULLY HASN&apos;T HAPPENED YET.</p></section>
     </main>
